@@ -1,10 +1,8 @@
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-  Serial.println("Hola, Jesus Berisha.");
-}
+from machine import UART
+import time
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  delay(10); // this speeds up the simulation
-}
+uart = UART(0, baudrate=115200)
+uart.write("Hello, ESP32!\n")
+
+while True:
+    time.sleep(0.01)  
