@@ -1,38 +1,22 @@
-/* ESP32 WiFi Scanning example - by Jesus Berisha */
+# ESP32 WiFi Scanning example
 
-#include "WiFi.h"
+import network
+import time
 
-void setup() {
-  Serial.begin(115200);
-  Serial.println("Iniciant escaneig WiFi...");
-  WiFi.mode(WIFI_STA);
-  Serial.println("Configuració completada!");
-}
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
 
-void loop() {
-  Serial.println("Escanejant xarxes disponibles...");
-
-  int n = WiFi.scanNetworks();
-  Serial.println("Escaneig complet!");
-  if (n == 0) {
-    Serial.println("No s'ha trobat cap xarxa WiFi.");
-  } else {
-    Serial.println();
-    Serial.print("S'han trobat ");
-    Serial.print(n);
-    Serial.println(" xarxes WiFi disponibles:");
-    for (int i = 0; i < n; ++i) {
-      Serial.print(i + 1);
-      Serial.print(": ");
-      Serial.print(WiFi.SSID(i));
-      Serial.print(" (Potència senyal: ");
-      Serial.print(WiFi.RSSI(i));
-      Serial.print(" dBm)");
-      Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " (Oberta)" : " (Protegida)");
-      delay(10);
-    }
-  }
-  Serial.println("");
-
-  delay(5000);
-}
+while True:
+    print("Scanning for networks...")
+    networks = wlan.scan()
+    print("Scan complete!")
+    if not networks:
+        print("No networks found.")
+    else:
+        print(f"{len(networks)} networks found:")
+        for i, net in enumerate(networks):
+            ssid = net[0].decode()
+            rssi = net[3]
+            print(f"{i+1}: {ssid} ({rssi} dBm)")
+    print()
+    time.sleep(5)
