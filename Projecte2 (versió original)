@@ -1,4 +1,4 @@
-# ESP32 WiFi Scanning example
+# ESP32 WiFi Scanning example - by Jesus Berisha
 
 import network
 import time
@@ -7,16 +7,17 @@ wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 
 while True:
-    print("Scanning for networks...")
+    print("Iniciant escaneig de xarxes WiFi... (Versió modificada per Jesus Berisha)")
     networks = wlan.scan()
-    print("Scan complete!")
+    print("Escaneig completat!")
     if not networks:
-        print("No networks found.")
+        print("No s'ha trobat cap xarxa WiFi.")
     else:
-        print(f"{len(networks)} networks found:")
+        print(f"S'han trobat {len(networks)} xarxes disponibles:")
         for i, net in enumerate(networks):
             ssid = net[0].decode()
             rssi = net[3]
-            print(f"{i+1}: {ssid} ({rssi} dBm)")
+            is_open = "(Oberta)" if net[4] == 0 else "(Protegida)"
+            print(f"{i+1}: {ssid} — Potència: {rssi} dBm {is_open}")
     print()
     time.sleep(5)
